@@ -1,8 +1,8 @@
 const colors = ['#6EC73D', '#3A4CC0', '#FCB03C', '#FF5733', '#A656DC', '#F0E68C']; // Color palette
 let board = [];
-const boardSize = 24; // 12x12 grid
+const boardSize = 12; // 12x12 grid
 const gameBoardElement = document.getElementById('game-board');
-let moveCounter = 25; // Starting moves
+let moveCounter = 30; // Starting moves
 const movesDisplay = document.getElementById('moves-left');
 const resetButton = document.getElementById('reset-button');
 
@@ -19,7 +19,7 @@ function initializeBoard() {
     board.push(row);
   }
   console.log('Board initialized:', board); // Debug log to verify board creation
-  moveCounter = 25; // Reset moves
+  moveCounter = 30// Reset moves
   updateMovesDisplay();
   renderBoard(); // Call to render the board
 }

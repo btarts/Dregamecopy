@@ -2,13 +2,15 @@ const colors = ['#6EC73D', '#3A4CC0', '#FCB03C', '#FF5733', '#A656DC', '#F0E68C'
 let board = [];
 const boardSize = 12; // 12x12 grid
 const gameBoardElement = document.getElementById('game-board');
-let moveCounter = 30; // Starting moves
+let baseMoveCounter = 30; // Starting moves
+let moveCounter = baseMoveCounter; // Moves for current level
+let level = 1; // Start at level 1
 const movesDisplay = document.getElementById('moves-left');
+const levelDisplay = document.getElementById('level');
 const resetButton = document.getElementById('reset-button');
 
 // Initialize the game board
 function initializeBoard() {
-  console.log('initializeBoard is being called'); // Debug log to check function call
   board = []; // Clear the board before initializing
   for (let i = 0; i < boardSize; i++) {
     const row = [];
@@ -18,27 +20,25 @@ function initializeBoard() {
     }
     board.push(row);
   }
-  console.log('Board initialized:', board); // Debug log to verify board creation
-  moveCounter = 30// Reset moves
-  updateMovesDisplay();
+  moveCounter = baseMoveCounter - (level - 1); // Decrease moves by 1 each level
+  updateGameStatus();
   renderBoard(); // Call to render the board
 }
 
-// Update the move display
-function updateMovesDisplay() {
+// Update the game status display (moves and level)
+function updateGameStatus() {
   movesDisplay.innerText = `Moves left: ${moveCounter}`;
+  levelDisplay.innerText = `Level: ${level}`;
 }
 
 // Render the board in the DOM
 function renderBoard() {
-  console.log('Rendering board...'); // Debug log to check render function call
   gameBoardElement.innerHTML = ''; // Clear previous board
   board.forEach((row, rowIndex) => {
     row.forEach((color, colIndex) => {
       const tile = document.createElement('div');
       tile.className = 'tile';
       tile.style.backgroundColor = color;
-      console.log(`Appending tile at (${rowIndex}, ${colIndex}) with color ${color}`); // Debug log for each tile
       gameBoardElement.appendChild(tile);
     });
   });
@@ -71,18 +71,27 @@ document.querySelectorAll('.color-button').forEach(button => {
     if (selectedColor !== startColor) {
       floodFill(0, 0, startColor, selectedColor); // Apply flood fill
       moveCounter--; // Decrease moves
-      updateMovesDisplay(); // Update moves display
+      updateGameStatus(); // Update moves display
     }
 
     // Check for win condition: All tiles are the same color
     if (checkWinCondition()) {
-      alert('Congratulations! You won the game!');
+      alert(`Congratulations! You've completed level ${level}`);
+      levelUp(); // Proceed to next level
     }
   });
 });
 
-// Reset the game
+// Proceed to the next level
+function levelUp() {
+  level++; // Increase level by 1
+  initializeBoard(); // Reset the game with new difficulty (fewer moves)
+}
+
+// Reset the game to level 1
 resetButton.addEventListener('click', () => {
+  level = 1;
+  baseMoveCounter = 30;
   initializeBoard(); // Re-initialize the board
 });
 
@@ -92,7 +101,5 @@ function checkWinCondition() {
   return board.every(row => row.every(tile => tile === color));
 }
 
-// Ensure that everything loads after the DOM is ready
-document.addEventListener('DOMContentLoaded', (event) => {
-  initializeBoard();
-});
+// Start the game
+initializeBoard();

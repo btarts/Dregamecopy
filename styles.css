@@ -1,0 +1,24 @@
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(12, 30px); /* 12 columns */
+  grid-template-rows: repeat(12, 30px);    /* 12 rows */
+  margin: 20px auto;
+  gap: 1px; /* Small gap between tiles */
+  width: 372px; /* Total width */
+  height: 372px; /* Total height */
+  border: 1px solid black;
+}
+
+.tile {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+}
+
+#controls button {
+  margin: 5px;
+}
+
+#reset-button {
+  margin-top: 10px;
+}
